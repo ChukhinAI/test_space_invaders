@@ -3,7 +3,7 @@ export default class Bunker {
     this.x = x;
   	this.y = y;
     this._sprite = sprite;
-    this.lives = 20;
+    this.lives = 10;
   }
 
   getBoundingRect() {

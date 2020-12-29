@@ -10,3 +10,4 @@ export default class Sprite {
     this.scaleY = scY;
   }
 }
+

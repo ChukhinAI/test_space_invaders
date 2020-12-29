@@ -16,7 +16,8 @@ export default class Alien {
         let shouldShoot = Math.random() < 1 / count / 6;
         if (shouldShoot)
         {
-            return new Bullet((this.x + this._spriteA.w / 2) * this._spriteA.scaleX, (this.y + this._spriteA.h) * this._spriteA.scaleY, -2, 2, 2, "yellow")
+            return new Bullet((this.x + this._spriteA.w / 2) * this._spriteA.scaleX,
+             (this.y + this._spriteA.h) * this._spriteA.scaleY, -2, 2, 2, "yellow")
         }
         return undefined;
     }

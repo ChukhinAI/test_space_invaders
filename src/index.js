@@ -44,8 +44,19 @@ function onPreloadComplete() {
   stopCycle = null;
   init(canvas);
   run();
+
+  //setTimeout(() => document.querySelector('audio').play(), 1)
+
 }
 
-//setTimeout(() => {  console.log("World10!"); }, 10000);
-preload(onPreloadComplete); // without waiting
-//setTimeout(() => {  preload(onPreloadComplete); }, 69000); // with titles
+//setTimeout(() => {  console.log("World10!"); }, 10000); // test
+//preload(onPreloadComplete); // without waiting
+setTimeout(() => {  preload(onPreloadComplete); }, 85000); // with titles
+
+setTimeout(function () {
+    let audio = document.querySelector('audio')
+
+    audio.muted = false
+    audio.currentTime = 0
+    audio.play()
+}, 3000)

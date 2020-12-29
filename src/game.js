@@ -1,32 +1,36 @@
 import Sprite from './sprite'
 import Cannon from './cannon'
+//import CannonShield from './cannon'
+import Battleship from './battleship'
 import Bullet from './bullet'
 import Alien from './alien'
 import Bunker from './bunker'
 import InputHandler from './input-handler'
 
-
-//import assetPath from '../assets/invaders_m_4.png'
-import assetPath from '../assets/14_2.png'
+import assetPath from '../assets/14_3.png'
 const canvas = document.getElementById("cnvs");
 
-//let ctx = canvas.getContext('2d'); // ACHTUNG!
 
 let assets;
 const sprites = {
     aliens: [],
     cannon: null,
     bunker: null,
-    cannonShield: null
+    cannonShield: null,
+    Battleship: null
 };
+
 const gameState = {
     bullets: [],
     aliens: [],
     bunkers: [],
     alienBullets: [],
     cannon: null,
+    cannonShield: null,
+    Battleship: null,
     score: 0
 };
+
 const inputHandler = new InputHandler();
 
 function sleep(ms) {
@@ -34,17 +38,15 @@ function sleep(ms) {
 }
 
 export function preload(onPreloadComplete) {
-    //  It was at this moment I knew: I fckd up
-
-     // sleep(2000);
-    //setTimeout(() => {  console.log("World!"); }, 20000);
-
     assets = new Image();
     assets.addEventListener("load", () => {
         let scaleX = 2;
         let scaleY = 2;
         sprites.cannon = new Sprite(assets, 63, 0, 20, 32, scaleX, scaleY); // оригинал
-        sprites.cannonShield = new Sprite(assets, 120, 3, 38, 42, scaleX, scaleY);
+        //sprites.cannonShield = new Sprite(assets, 120, 3, 38, 42, scaleX, scaleY); // щиты
+        //sprites.cannon = new Sprite(assets, 120, 3, 38, 42, scaleX, scaleY); // текущий
+        sprites.battleship = new Sprite(assets, 5, 46, 127, 27, scaleX, scaleY);
+        //sprites.cannon = new Sprite(assets, 5, 47, 102, 25, scaleX, scaleY); // для тестов
 
         sprites.bunker = new Sprite(assets, 84, 8, 35, 24, scaleX, scaleY);
         sprites.aliens = [
@@ -84,35 +86,9 @@ function classicFormation()
     }
 }
 
-function svinfylkingFormation()
-{
-    const alienTypes = [0, 1, 2];
-    let split = 2; //2
-    for (let i = 0; i < 5; i++) {
-        for (let j = -2 + split; j < 22 - split; j++) {
-            const alienType = alienTypes[i % 3];
-            
-            let alienX = 28 + j*28;
-            let alienY = 28 + i*28;
-            
-            if (alienType === 1) {
-                alienX += 3; // aliens of this type is a bit thinner
-            }
-            
-            gameState.aliens.push(
-                new Alien(alienX, alienY, sprites.aliens[alienType])
-            );
-        }
-        split+=2;
-    }
-}
 
 export function init(canvas) {
-    if (Math.random() < 0.5)
-        svinfylkingFormation();
-    else
-        classicFormation();
-    
+    classicFormation();
     for (let j = 0; j < 8; j++) {
         
         let bunkerX = 28 + j*90;
@@ -123,26 +99,80 @@ export function init(canvas) {
     }
     
     gameState.cannon = new Cannon(
-        100, canvas.height - 100,
+        //100, canvas.height - 100, // original
+        100, 800,
         sprites.cannon
     );
+    //console.log(canvas.height)
+    gameState.cannonShield = new Cannon(
+        120, canvas.height - 120,
+        sprites.cannonShield
+    );
+
+        gameState.battleship = new Battleship(
+        //canvas.width - 300, canvas.height - 350,
+        Math.min(canvas.width / 2, 900), canvas.height - 400,
+        sprites.battleship,
+        console.log("battleship spawn in " + Math.min(canvas.width / 2, 600))
+    );
+
+}
+
+function battleshipFire(bulletX, bulletY)
+{
+/*
+    const bulletX = (gameState.battleship.x + gameState.battleship._sprite.w / 4.0) * // 4.5
+    (gameState.battleship._sprite.scaleX + 2);
+    const bulletY = gameState.battleship.y;
+   */
+    //gameState.bullets.push(new Bullet(bulletX, bulletY, -8, 2, 6, "#ffa"));
 }
 
 export function update(time, stopGame) {
     if (inputHandler.isDown(37)) { // Left
-        if (gameState.cannon.x - 4 >= 0) // somehow works
-            gameState.cannon.x -= 4; 
+        if (gameState.cannon.x - 4 >= 0)
+        {
+            gameState.cannon.x -= 4;
+            gameState.cannonShield.x -= 4;
+        }
     }
     
     if (inputHandler.isDown(39)) { // Right
         if ((gameState.cannon.x + 4 + gameState.cannon._sprite.w) * gameState.cannon._sprite.scaleX <= canvas.width)
+            {
             gameState.cannon.x += 4;
+            gameState.cannonShield.x +=4;
+            }
     }
     
     if (inputHandler.isPressed(32)) { // Space
-        const bulletX = (gameState.cannon.x + gameState.cannon._sprite.w / 2) * gameState.cannon._sprite.scaleX
+        const bulletX = (gameState.cannon.x + gameState.cannon._sprite.w / 2) * gameState.cannon._sprite.scaleX;
         const bulletY = gameState.cannon.y;
         gameState.bullets.push(new Bullet(bulletX, bulletY, -8, 2, 6, "#fff"));
+    }
+
+    if (true) // потом булевскую переменную завести, типо поддержка с воздуха приехала
+    {
+        const bulletX = (gameState.battleship.x - 6 + gameState.battleship._sprite.w / 4.5) *
+        (gameState.battleship._sprite.scaleX + 2); // + 2
+        const bulletY = gameState.battleship.y;
+        //console.log('bulletX position', Math.round(bulletX) % 2 )
+        //console.log('battlesip pos', gameState.battleship.x)
+        if (Math.round(bulletX) % 20 == 0)
+        {
+            let j = 0;
+            let k = 100;
+            for (let i = 0; i < 4; i++)
+            {
+                gameState.bullets.push(new Bullet(bulletX + j, bulletY, -5, 3, 7, "#ffa"));
+                gameState.bullets.push(new Bullet(bulletX + k, bulletY, -5, 3, 7, "#ffa"));
+                //console.log('bulletX in if', bulletX);
+                j += 24;
+                k += 24;
+            }
+        }
+        //setInterval(function () {battleshipFire(bulletX, bulletY)}, 1000);
+
     }
 
     gameState.bullets.forEach((b, i, self) => {
@@ -181,8 +211,9 @@ function showLoseScreen()
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = "100px Arial, sans-serif";
-    ctx.fillText("Gameover!", canvas.width / 2 - 300, canvas.height / 2 - 200);
-    ctx.fillText("Final score: " + gameState.score, canvas.width / 2 - 300, canvas.height / 2 + 120 - 200);
+    ctx.fillText("Станция пала,", canvas.width / 2 - 100 * 4, canvas.height / 2 - 200);
+    ctx.fillText("врага теперь не остановить", canvas.width / 2 - 100 * 7, canvas.height / 2 - 200 + 120);
+    ctx.fillText("Ваши очки: " + gameState.score, canvas.width / 2 - 400, canvas.height / 2 + 120 * 2);
 }
 
 function showWinScreen()
@@ -190,8 +221,8 @@ function showWinScreen()
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = "100px Arial, sans-serif";
-    ctx.fillText("You win!", canvas.width / 2 - 300, canvas.height / 2 - 200);
-    ctx.fillText("Your score: " + gameState.score, canvas.width / 2 - 300, canvas.height / 2 + 120 - 200);
+    ctx.fillText("Победа в руках человечества!", canvas.width / 2 - 200 * 4, canvas.height / 2 - 200);
+    ctx.fillText("Ваши очки: " + gameState.score, canvas.width / 2 - 400, canvas.height / 2 + 120 - 200);
 }
 
 export let draw = function draw(canvas, time) {
@@ -200,7 +231,8 @@ export let draw = function draw(canvas, time) {
     
     gameState.aliens.forEach(a => a.draw(ctx, time));
     gameState.cannon.draw(ctx);
-    gameState.cannonShield.draw(ctx);
+    //gameState.cannonShield.draw(ctx); // achtung! break game
+    gameState.battleship.draw(ctx);
     gameState.bullets.forEach(b => b.draw(ctx));
     gameState.bunkers.forEach(b => b.draw(ctx));
     gameState.alienBullets.forEach(b => b.draw(ctx));
@@ -209,14 +241,21 @@ export let draw = function draw(canvas, time) {
 
 function drawInfo(ctx)
 {
+    console.log("ctx.width = " + canvas.width);
     ctx.fillStyle = "#9FFF9F";
     ctx.fillRect(0, 50, ctx.width, 10);
-    
-    
+
     ctx.font = "24px Arial, sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText("Score: " + gameState.score + "    Shields: " + gameState.cannon.lives, 20, 20 );
+    ctx.fillText("Очки: " + gameState.score + "    Щиты: " + gameState.cannon.lives +
+        "    Дистанция до подкреплений: " +
+        Math.max(0, (Math.round(gameState.battleship.x)) - 126 * 4),
+        20, 20 );
+    //ctx.fillText("time to reinforcements:" , gameState.battleship.x)
+
+    gameState.battleship.x = gameState.battleship.x - 0.3 // achtung!!!
+
 }
 
 function rectIntersection(r1, r2)
@@ -237,13 +276,13 @@ function activateShield() // в данный момент выпилена
 
     let cannon = gameState.cannon;
 
-    //ctx.clearRect(0, 0, canvas.width, canvas.height); // achtung
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.lineWidth = 50; // толщина линии
 
     //ctx.arc(cannon.x,cannon.y,300,0, Math.PI,true);
     ctx.arc(300, 700,200,0, Math.PI,true);
-    console.log('y=', cannon.y)
+    //console.log('y=', cannon.y)
     ctx.strokeStyle = 'red';
     ctx.fillStyle = "orange";
     ctx.stroke();
@@ -257,6 +296,8 @@ function collisionCheck()
     let bunkers = gameState.bunkers;
     let aliens = gameState.aliens;
     let cannon = gameState.cannon;
+    let cannonShield = gameState.cannon;
+    let battleship = gameState.battleship;
     let gameOver = false;
 
 
@@ -271,13 +312,19 @@ function collisionCheck()
         });
     });
         
-    alienBullets.forEach((alienBullet, i, alienBullets) => {
+    alienBullets.forEach((alienBullet, i, alienBullets) =>
+    {
+
+        if (rectIntersection(alienBullet, battleship.getBoundingRect()))
+        {
+            alienBullets.splice(i, 1);
+        }
         if (rectIntersection(alienBullet, cannon.getBoundingRect()))
         {
             alienBullets.splice(i, 1);
             cannon.lives--;
 
-            //activateShield(); // пусть хоть 1-2 секунды будет активирован, найти как это сделать// изменил стратегию
+            //activateShield(); //  изменил стратегию
 
             if (cannon.lives <= 0)
             {
