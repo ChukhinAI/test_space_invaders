@@ -13,7 +13,7 @@ body, html
     background-color: #000;
     overflow: hidden;
 }
-/*
+
 p#start
 {
     position: relative;
@@ -227,11 +227,12 @@ h3
 {
     position: absolute;
     top: 100%;
-    -webkit-animation: scroll 100s linear 4s infinite;
-    -moz-animation: scroll 100s linear 4s infinite;
-    -ms-animation: scroll 100s linear 4s infinite;
-    -o-animation: scroll 100s linear 4s infinite;
-    animation: scroll 100s linear 4s infinite;
+    -webkit-animation: scroll 10s linear 2s infinite;
+    -moz-animation: scroll 10s linear 2s infinite;
+    -ms-animation: scroll 10s linear 2s infinite;
+    -o-animation: scroll 10s linear 2s infinite;
+    animation: scroll 10s linear 2s infinite;
+    animation-iteration-count: 1;
 }
 
 
@@ -251,4 +252,3 @@ h3
     100% { top: -120%; }
 }
 
-*/

@@ -51,7 +51,7 @@ function onPreloadComplete() {
 
 //setTimeout(() => {  console.log("World10!"); }, 10000); // test
 //preload(onPreloadComplete); // without waiting
-setTimeout(() => {  preload(onPreloadComplete); }, 85000); // with titles
+setTimeout(() => {  preload(onPreloadComplete); }, 47000); // with titles 85 000
 
 setTimeout(function () {
     let audio = document.querySelector('audio')
