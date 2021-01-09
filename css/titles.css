@@ -9,10 +9,11 @@ body, html
     height: 100%;
     font-family: "Droid Sans", arial, verdana, sans-serif;
     font-weight: 700;
+    background-image: url(../background.png);
     color: #ff6;
-    background-color: #000;
     overflow: hidden;
 }
+
 
 p#start
 {
@@ -25,39 +26,36 @@ p#start
     opacity: 0;
     z-index: 1;
     -webkit-animation: intro 2s ease-out;
-    -moz-animation: intro 2s ease-out;
-    -ms-animation: intro 2s ease-out;
-    -o-animation: intro 2s ease-out;
     animation: intro 2s ease-out;
 }
 
 @-webkit-keyframes intro {
     0% { opacity: 1; }
-    90% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
 
 @-moz-keyframes intro {
     0% { opacity: 1; }
-    90% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
 
 @-ms-keyframes intro {
     0% { opacity: 1; }
-    90% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
 
 @-o-keyframes intro {
     0% { opacity: 1; }
-    90% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
 
 @keyframes intro {
     0% { opacity: 1; }
-    90% { opacity: 1; }
+    50% { opacity: 0; }
     100% { opacity: 0; }
 }
 
@@ -76,11 +74,8 @@ h1
     text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
     opacity: 0;
     z-index: 1;
-    -webkit-animation: logo 5s ease-out 2.5s;
-    -moz-animation: logo 5s ease-out 2.5s;
-    -ms-animation: logo 5s ease-out 2.5s;
-    -o-animation: logo 5s ease-out 2.5s;
-    animation: logo 5s ease-out 2.5s;
+    -webkit-animation: logo 2.5s ease-out 2.7s;
+    animation: logo 2.5s ease-out 2.7s;
 }
 
 h1 sub
@@ -106,19 +101,16 @@ h2
     text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
     opacity: 0;
     z-index: 1;
-    -webkit-animation: logo 5s ease-out 64.5s;
-    -moz-animation: logo 5s ease-out 64.5s;
-    -ms-animation: logo 5s ease-out 64.5s;
-    -o-animation: logo 5s ease-out 64.5s;
-    animation: logo 5s ease-out 64.5s;
+    -webkit-animation: logo 4s ease-out 30.5s;
+    animation: logo 4s ease-out 30.5s;
 }
 
 h3
 {
     position: absolute;
-    width: 2.6em;
-    left: 50%;
-    top: 15%;
+    width: 7em;
+    left: 45%;
+    top: 5%;
     font-size: 10em;
     text-align: center;
     margin-left: -1.3em;
@@ -128,11 +120,47 @@ h3
     text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
     opacity: 0;
     z-index: 1;
-    -webkit-animation: logo 5s ease-out 68.5s;
-    -moz-animation: logo 5s ease-out 68.5s;
-    -ms-animation: logo 5s ease-out 68.5s;
-    -o-animation: logo 5s ease-out 68.5s;
-    animation: logo 5s ease-out 68.5s;
+    -webkit-animation: logo 5s ease-out 33.5s;
+    animation: logo 5s ease-out 33.5s;
+}
+
+h4
+{
+    position: absolute;
+    width: 8em;
+    left: 40%;
+    top: 5%;
+    font-size: 10em;
+    text-align: center;
+    margin-left: -1.3em;
+    line-height: 0.8em;
+    letter-spacing: -0.05em;
+    color: red;
+    text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
+    opacity: 0;
+    z-index: 1;
+    -webkit-animation: logo 5s ease-out 38.0s;
+    animation: logo 5s ease-out 38.0s;
+    animation-direction: reverse;
+}
+
+h5
+{
+    position: absolute;
+    width: 8em;
+    right: 30%;
+    top: 5%;
+    font-size: 10em;
+    text-align: center;
+    margin-left: -1.3em;
+    line-height: 0.8em;
+    letter-spacing: -0.05em;
+    color: red;
+    text-shadow: -2px -2px 0 #ff6, 2px -2px 0 #ff6, -2px 2px 0 #ff6, 2px 2px 0 #ff6;
+    opacity: 0;
+    z-index: 1;
+    -webkit-animation: logo 5s ease-out 43.5s;
+    animation: logo 5s ease-out 43.5s;
 }
 
 @-webkit-keyframes logo {
@@ -227,11 +255,8 @@ h3
 {
     position: absolute;
     top: 100%;
-    -webkit-animation: scroll 10s linear 2s infinite;
-    -moz-animation: scroll 10s linear 2s infinite;
-    -ms-animation: scroll 10s linear 2s infinite;
-    -o-animation: scroll 10s linear 2s infinite;
-    animation: scroll 10s linear 2s infinite;
+    -webkit-animation: scroll 40s linear 2s infinite;
+    animation: scroll 40s linear 2s infinite;
     animation-iteration-count: 1;
 }
 

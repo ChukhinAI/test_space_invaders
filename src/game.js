@@ -69,7 +69,7 @@ function classicFormation()
 {
     const alienTypes = [0, 1, 2];
     for (let i = 0, len = alienTypes.length; i < len; i++) {
-        for (let j = 0; j < 22; j++) {
+        for (let j = 0; j < 24; j++) { // 22
             const alienType = alienTypes[i];
             
             let alienX = 28 + j*28;
@@ -100,7 +100,7 @@ export function init(canvas) {
     
     gameState.cannon = new Cannon(
         //100, canvas.height - 100, // original
-        100, 800,
+        100, 800, // norm
         sprites.cannon
     );
     //console.log(canvas.height)
@@ -111,7 +111,8 @@ export function init(canvas) {
 
         gameState.battleship = new Battleship(
         //canvas.width - 300, canvas.height - 350,
-        Math.min(canvas.width / 2, 900), canvas.height - 400,
+        //Math.min(canvas.width / 2, 900), canvas.height - 400, // smaller, than new music
+            1200, canvas.height - 400,
         sprites.battleship,
         console.log("battleship spawn in " + Math.min(canvas.width / 2, 600))
     );
@@ -225,6 +226,7 @@ function showWinScreen()
     ctx.fillText("Ваши очки: " + gameState.score, canvas.width / 2 - 400, canvas.height / 2 + 120 - 200);
 }
 
+
 export let draw = function draw(canvas, time) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -236,12 +238,20 @@ export let draw = function draw(canvas, time) {
     gameState.bullets.forEach(b => b.draw(ctx));
     gameState.bunkers.forEach(b => b.draw(ctx));
     gameState.alienBullets.forEach(b => b.draw(ctx));
-    drawInfo(ctx)
+    drawInfo(ctx);
+    let img = new Image();
+    img.src = "./background.png";
+    img.onload = function (ctx) {
+
+        ctx.clip();
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);//Первый 0=X
+        ctx.restore();
+    };
 }
 
 function drawInfo(ctx)
 {
-    console.log("ctx.width = " + canvas.width);
+    //console.log("ctx.width = " + canvas.width);
     ctx.fillStyle = "#9FFF9F";
     ctx.fillRect(0, 50, ctx.width, 10);
 
@@ -311,6 +321,7 @@ function collisionCheck()
            }
         });
     });
+
         
     alienBullets.forEach((alienBullet, i, alienBullets) =>
     {
@@ -330,6 +341,7 @@ function collisionCheck()
             {
                 gameOver = true;
             }
+
         }
         
         bunkers.forEach((bunker, j, bunkers) => {
@@ -341,10 +353,18 @@ function collisionCheck()
                 {
                     bunkers.splice(j, 1);
                 }
+                console.log('n bumkers = ' + bunkers.length);
            }
         });
     });
-    
+
+    if (bunkers.length < 1)
+    {
+        console.log('bunkers len < 1');
+        gameOver = true;
+        //showLoseScreen();
+    }
+
     aliens.forEach((alien, i, aliens) => {
         let cB = cannon.getBoundingRect()
         let aB = alien.getBoundingRect()
